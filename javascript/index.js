@@ -27,27 +27,68 @@
 // Iteration 1 - using callbacks
 // ...
 
-getInstruction("mashedPotatoes", 0, (step1) => {
-  document.querySelector("#mashedPotatoes").innerHTML += `<li>${step1}</li>`;
-  // ... Your code here
-  getInstruction('mashedPotatoes', 1, (step2) => {
-    document.querySelector("#mashedPotatoes").innerHTML += `<li>${step2}</li>`;
-    getInstruction('mashedPotatoes', 2, (step3) => { 
-      document.querySelector('#mashedPotatoes').innerHTML += `<li>${step3}</li>`;
-      getInstruction('mashedPotatoes', 3, (step4) => {
-        document.querySelector('#mashedPotatoes').innerHTML += `<li>${step4}</li>`;
-        getInstruction('mashedPotatoes', 4, (step5) => {
-          document.querySelector('#mashedPotatoes').innerHTML += `<li>${step5}</li>`;
-          document.querySelector('#mashedPotatoes').innerHTML += `<li>Mashed potatoes are ready!</li>`;
-          document.querySelector('#mashedPotatoesImg').removeAttribute('hidden');
-          getInstruction('mashedPotatos', 5, (step6) => {
-            document.querySelector('#mashedPotatoes').innerHTML += `<li>${step6}</li>`;
-          }, (err) => { console.log(err); })
-        }, (err) => { console.log(err); })
-      }, (err) => { console.log(err); });
-    }, (err) => { console.log(err); })
-  }, (err) => { console.log(err); })
-}, (err) => { console.log(err); });
+getInstruction(
+  "mashedPotatoes",
+  0,
+  (step0) => {
+    document.querySelector("#mashedPotatoes").innerHTML += `<li>${step0}</li>`;
+    getInstruction(
+      "mashedPotatoes",
+      1,
+      (step1) => {
+        document.querySelector(
+          "#mashedPotatoes"
+        ).innerHTML += `<li>${step1}</li>`;
+        getInstruction(
+          "mashedPotatoes",
+          2,
+          (step2) => {
+            document.querySelector(
+              "#mashedPotatoes"
+            ).innerHTML += `<li>${step2}</li>`;
+            getInstruction(
+              "mashedPotatoes",
+              3,
+              (step3) => {
+                document.querySelector(
+                  "#mashedPotatoes"
+                ).innerHTML += `<li>${step3}</li>`;
+                getInstruction(
+                  "mashedPotatoes",
+                  4,
+                  (step4) => {
+                    document.querySelector(
+                      "#mashedPotatoes"
+                    ).innerHTML += `<li>${step4}</li>`;
+                    // Here we repeat the step 1 so we don't enter the error in the getInstruction() function. We don't care about the steps bc we just want to print a specific message
+                    getInstruction(
+                      "mashedPotatoes",
+                      1,
+                      () => {
+                        document.querySelector(
+                          "#mashedPotatoes"
+                        ).innerHTML += `<li>Mashed potatoes are ready!</li>`;
+                      },
+                      (error) => console.log(error)
+                    );
+                    // Instead, we could also directly print the variable in the previous callback like this, but we wouldn't get the setTimeout effect
+                    /* document.querySelector("#mashedPotatoes").innerHTML += `<li>Mashed potatoes are ready!</li>`; */
+                  },
+                  (error) => console.log(error)
+                );
+              },
+              (error) => console.log(error)
+            );
+          },
+          (error) => console.log(error)
+        );
+      },
+      (error) => console.log(error)
+    );
+  },
+  (error) => console.log(error)
+);
+
 
 // Iteration 2 - using promises
 // ...
@@ -81,13 +122,21 @@ obtainInstruction('steak', 0)
     document.querySelector('#steak').innerHTML += `<li>${step6}</li>`;
     return obtainInstruction('steak', 7);
   })
+/*   .then( (step7) => {
+    document.querySelector("#steak").innerHTML += `<li>${step7}</li>`
+    return obtainInstruction('steak', 7)
+  })
+  .then( (step8) => {
+    document.querySelector("#steak").innerHTML += `<li>Steak is ready!</li>`
+  }) */
   .then((step7) => {
     document.querySelector('#steak').innerHTML += `<li>${step7}</li>`;
-    document.querySelector('#steak').innerHTML += `<li>Steak is ready!</li>`;
-    document.querySelector('#steakImg').removeAttribute('hidden');
+    document.querySelector('#steak').lastChild.replaceWith(`Steak is ready!`)
+   /*  document.querySelector('#steak').innerHTML.removeAttribute(step7); */
 
   })
-  .catch((err) => console.log(err));
+  
+  .catch((err) => console.log(err)); 
 
 // Iteration 3 using async/await
 // ...
